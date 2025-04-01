@@ -1,11 +1,15 @@
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
-public class MinHeap<E extends Comparable<E>> {
+public class MinHeap<E> implements Iterable<E> {
     private List<E> myList;
+    private Comparator<E> comparator;
 
-    public MinHeap() {
+    public MinHeap(Comparator<E> comparator) {
         myList = new ArrayList<>();
+        this.comparator = comparator;
     }
 
     public void add(E value) {
@@ -16,14 +20,15 @@ public class MinHeap<E extends Comparable<E>> {
     private void swapUp(int index) {
         if (index == 0) return;
         int parentIndex = (index - 1) / 2;
-        if (myList.get(index).compareTo(myList.get(parentIndex)) < 0) {
+        if (comparator.compare(myList.get(index), myList.get(parentIndex)) < 0) {
             E temp = myList.get(index);
             myList.set(index, myList.get(parentIndex));
             myList.set(parentIndex, temp);
             swapUp(parentIndex); 
         }
     }
-    public E poll(){
+
+    public E poll() {
         if (myList.isEmpty()) return null;
         E root = myList.get(0);
         myList.set(0, myList.get(myList.size() - 1));
@@ -31,14 +36,15 @@ public class MinHeap<E extends Comparable<E>> {
         swapDown(0);
         return root;
     }
-    private void swapDown(int index){
+
+    private void swapDown(int index) {
         int leftIndex = 2 * index + 1;
         int rightIndex = 2 * index + 2;
         int smallestIndex = index;
-        if (leftIndex < myList.size() && myList.get(leftIndex).compareTo(myList.get(smallestIndex)) < 0) {
+        if (leftIndex < myList.size() && comparator.compare(myList.get(leftIndex), myList.get(smallestIndex)) < 0) {
             smallestIndex = leftIndex;
         }
-        if (rightIndex < myList.size() && myList.get(rightIndex).compareTo(myList.get(smallestIndex)) < 0) {
+        if (rightIndex < myList.size() && comparator.compare(myList.get(rightIndex), myList.get(smallestIndex)) < 0) {
             smallestIndex = rightIndex;
         }
         if (smallestIndex != index) {
@@ -48,20 +54,24 @@ public class MinHeap<E extends Comparable<E>> {
             swapDown(smallestIndex);
         }
     }
-    public void remove(E x){
+
+    public void remove(E x) {
         int index = myList.indexOf(x);
         if (index == -1) return;
         myList.set(index, myList.get(myList.size() - 1));
         myList.remove(myList.size() - 1);
         swapDown(index);
     }
-    public E peek(){
+
+    public E peek() {
         return myList.get(0);
     }
-    public boolean isEmpty(){
+
+    public boolean isEmpty() {
         return myList.isEmpty();
     }
-    public int size(){
+
+    public int size() {
         return myList.size();
     }
 
@@ -80,5 +90,10 @@ public class MinHeap<E extends Comparable<E>> {
             }
         }
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return myList.iterator();
     }
 }
