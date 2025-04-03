@@ -24,7 +24,7 @@ public class MinHeap<E> implements Iterable<E> {
             E temp = myList.get(index);
             myList.set(index, myList.get(parentIndex));
             myList.set(parentIndex, temp);
-            swapUp(parentIndex); 
+            swapUp(parentIndex);
         }
     }
 
@@ -73,6 +73,10 @@ public class MinHeap<E> implements Iterable<E> {
 
     public int size() {
         return myList.size();
+    }
+
+    public List<E> getElements() {
+        return new ArrayList<>(myList);
     }
 
     @Override

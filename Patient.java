@@ -1,10 +1,10 @@
-import java.time.LocalDateTime;
+
 
 public class Patient implements Comparable<Patient> {
     private String name;
     private String illnessDescription;
-    private String medicalPriority; // "high", "medium", "low"
-    private String ageGroup; // "child", "adult"
+    private String medicalPriority;
+    private String ageGroup;
     private int timestamp;
     private String doctorNote;
 
@@ -67,13 +67,21 @@ public class Patient implements Comparable<Patient> {
 
     @Override
     public int compareTo(Patient other) {
-        if (!this.medicalPriority.equals(other.medicalPriority)) {
-            return this.medicalPriority.compareTo(other.medicalPriority);
+        int priorityComparison = comparePriority(this.medicalPriority, other.medicalPriority);
+        if (priorityComparison != 0) {
+            return priorityComparison;
         }
         if (!this.ageGroup.equals(other.ageGroup)) {
             return this.ageGroup.equals("child") ? -1 : 1;
         }
         return Integer.compare(this.timestamp, other.timestamp);
+    }
+
+    private int comparePriority(String priority1, String priority2) {
+        if (priority1.equals(priority2)) return 0;
+        if (priority1.equals("high")) return -1;
+        if (priority1.equals("medium") && priority2.equals("low")) return -1;
+        return 1;
     }
 
     @Override

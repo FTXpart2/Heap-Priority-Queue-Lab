@@ -45,7 +45,6 @@ public class DLList<E> implements Iterable<E> {
 
     public E remove(int x) {
         E removed = getNode(x).get();
-        // Adjust pointers based on the position of the node to be removed
         if (size == 1) {
             head.setNext(tail);
             tail.setPrev(head);
@@ -139,7 +138,6 @@ public class DLList<E> implements Iterable<E> {
         };
     }
 
-    // Node class for the doubly linked list
     private static class Node<E> {
         private E data;
         private Node<E> next;
